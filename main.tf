@@ -122,7 +122,7 @@ resource "kubernetes_network_policy_v1" "default_deny_stars" {
       match_labels = {}
     }
   }
-  depends_on = [module.addons]
+  depends_on = [module.kubernetes_addons]
 }
 
 # Block all ingress and egress traffic within the client namespace
@@ -137,7 +137,7 @@ resource "kubernetes_network_policy_v1" "default_deny_client" {
       match_labels = {}
     }
   }
-  depends_on = [module.addons]
+  depends_on = [module.kubernetes_addons]
 }
 
 # Allow the management-ui to access the star application pods
@@ -161,7 +161,7 @@ resource "kubernetes_network_policy_v1" "allow_ui_to_stars" {
       }
     }
   }
-  depends_on = [module.addons]
+  depends_on = [module.kubernetes_addons]
 }
 
 # Allow the management-ui to access the client application pods
@@ -185,7 +185,7 @@ resource "kubernetes_network_policy_v1" "allow_ui_to_client" {
       }
     }
   }
-  depends_on = [module.addons]
+  depends_on = [module.kubernetes_addons]
 }
 
 # Allow the frontend pod to access the backend pod within the stars namespace
@@ -215,7 +215,7 @@ resource "kubernetes_network_policy_v1" "allow_frontend_to_backend" {
       }
     }
   }
-  depends_on = [module.addons]
+  depends_on = [module.kubernetes_addons]
 }
 
 # Allow the client pod to access the frontend pod within the stars namespace
@@ -246,5 +246,5 @@ resource "kubernetes_network_policy_v1" "allow_client_to_backend" {
       }
     }
   }
-  depends_on = [module.addons]
+  depends_on = [module.kubernetes_addons]
 }
