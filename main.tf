@@ -32,7 +32,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   name   = basename(path.cwd)
-  region = "us-west-2"
+  region = "ap-northeast-2"
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -54,6 +54,14 @@ module "eks" {
   cluster_name                   = local.name
   cluster_version                = "1.29" # Must be 1.25 or higher
   cluster_endpoint_public_access = true
+
+  map_roles = [
+    {
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/WSParticipantRole"
+      username = "ops-role"         # The user name within Kubernetes to map to the IAM role
+      groups   = ["system:masters"] # A list of groups within Kubernetes to which the role is mapped; Checkout K8s Role and Rolebindings
+    }
+  ]
 
   # Give the Terraform identity admin access to the cluster
   # which will allow resources to be deployed into the cluster
